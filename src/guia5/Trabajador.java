@@ -40,25 +40,16 @@ public class Trabajador {
 		
 		return "Trabajador: "+this.nombre+", trabaja de "+this.oficio+", mail: "+this.email+" y cobra "+this.costoPorHora+" por hora de trabajo.";
 	}
-	 
-	public void asignarTrabajo(Trabajo tr1) throws AgendaOcupadaException, OficioNoCoincideException{
+
+	public void asignarTrabajo(Trabajo trab) throws OficioNoCoincideException{ //TODO: Tiraria tambien AgendaOcupadaException
 		
-		try {
+		if(trab.oficioAsociado != this.oficio) {
 			
-			if(this.oficio != tr1.oficio) {
-				throw OficioNoCoincideException;
-			}
+			throw new OficioNoCoincideException();
+		} // Faltaria ver que no coincida la fecha
 		
-		} catch(OficioNoCoincideException OfNoCoinc) {
-			
-			System.out.println(OfNoCoinc.getMessage());			
-		}
-		catch(AgendaOcupadaException AgendOcup) {
-			
-		}
 		
 	}
 	
-	 
 	 
 }

@@ -8,13 +8,14 @@ public class Trabajo implements Contratable{
 	Instant fechaInicio;
 	Instant fechaFinal;
 	boolean urgente;
-	Oficio oficio;
+	Oficio oficioAsociado;
+	Servicio servicioAsociado;
 	
 	public Trabajo(String d, Instant fI, boolean u, Oficio o) {
 		this.descripcion = d;
 		this.fechaInicio = fI;
 		this.urgente = u;
-		this.oficio = o;
+		this.oficioAsociado = o;
 	}
 	
 	public void setFechaFinal(Instant f) {

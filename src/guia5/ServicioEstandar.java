@@ -2,10 +2,12 @@ package guia5;
 
 public class ServicioEstandar extends Servicio{
 
-	 public double costo;
+	 public int costo;
 	 
-	 public ServicioEstandar(double c) {
+	 public ServicioEstandar(String d, int c, boolean u) {
+		 this.descripcion = d;
 		 this.costo = c;
+		 this.urgente = u;
 	 }
 
 	  public double calcularCosto(Trabajador t){
@@ -19,6 +21,10 @@ public class ServicioEstandar extends Servicio{
 		  			
 	        return resultado;
 	 }
+	  
+	/* public String getDescripcion() {
+		 super();
+	 }*/
 	
 	
 }

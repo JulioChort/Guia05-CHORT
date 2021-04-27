@@ -22,7 +22,9 @@ public class App {
 		
 		 
 		
+		//usuarioContrataUnTrabajo();
 		
+		usuarioNoPuedeContratarUnTrabajo();
 		
 		
 		// TODO: Implementar interfaz Contratable
@@ -37,9 +39,26 @@ public class App {
 		
 		Trabajador t1 = new Trabajador("Juan","juan@gmail.com",o1,150,5.0);
 		
-		Contratable tr1 = new Trabajo("Arreglar la puerta de madera",Instant.now(), false, o1);
+		Servicio s1 = new ServicioEstandar("Arreglar",200, false);
 		
-		u1.contratar(tr1);
+		Contratable tr1 = u1.contratar(s1, "una puerta", Instant.now(),o1);
+		
+		try {
+			
+				t1.asignarTrabajo((Trabajo)tr1);	// TODO: Probablemente remover el cast
+
+		} catch(OficioNoCoincideException OfNoCoinc) {
+			
+			OfNoCoinc.printStackTrace();
+		}
+		/*catch(AgendaOcupadaException AgendOcup) {
+			
+			System.out.println(AgendOcup.getMessage());		
+			AgendOcup.printStackTrace();
+		}*/
+		
+		
+		System.out.println("Salio todo bien.");
 		
 	}
 	
@@ -51,11 +70,42 @@ public static void usuarioContrataUnaHerramienta() {
 		
 		Contratable a1 = new Alquiler(h1,Instant.now(), Instant.now());
 		
-		u1.contratar(a1);
+		//u1.contratar(a1);
 		
 	}
 
+public static void usuarioNoPuedeContratarUnTrabajo() {
 	
+	Usuario u1 = new Usuario("Jose", "Jose1986");
+	
+	Oficio o1 = new Oficio("Carpintero");
+	
+	Oficio o2 = new Oficio("Electricista");
+	
+	Trabajador t1 = new Trabajador("Juan","juan@gmail.com",o1,150,5.0);
+	
+	Servicio s1 = new ServicioEstandar("Arreglar",200, false);
+	
+	Contratable tr1 = u1.contratar(s1, "una puerta", Instant.now(),o2);
+	
+	try {
+		
+			t1.asignarTrabajo((Trabajo)tr1);	// TODO: Probablemente remover el cast
+
+	} catch(OficioNoCoincideException OfNoCoinc) {
+		
+		OfNoCoinc.printStackTrace();
+	}
+	/*catch(AgendaOcupadaException AgendOcup) {
+		
+		System.out.println(AgendOcup.getMessage());		
+		AgendOcup.printStackTrace();
+	}*/
+	
+	
+	System.out.println("Salio todo bien.");
+	
+}
 	
 	
 	

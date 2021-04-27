@@ -1,5 +1,6 @@
 package guia5;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +21,15 @@ public class Usuario {
 		return "Usuario: "+this.usuario+", se llama realmente "+this.nombre;
 	}
 
-	public void contratar(Contratable cont) {
+	public Trabajo contratar(Servicio serv, String desc, Instant fechaInic, Oficio of) { //String d, Instant fI, boolean u, Oficio o
 		
+		String descTrabajo = serv.getDescripcion()+" "+desc;
 		
-		cont.contratar();
+		Contratable tr1 = new Trabajo(descTrabajo, fechaInic, serv.getUrgencia(), of);
 		
-		this.trabajosYHerramientasContratadas.add(cont);
+		this.trabajosYHerramientasContratadas.add(tr1);
 		
-		return;
+		return (Trabajo) tr1;	//TODO: Probablemente cambiar/sacar el cast
 	}
 	
 	
