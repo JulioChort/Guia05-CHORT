@@ -1,11 +1,41 @@
 package guia5;
 
-public class Trabajo {
+import java.time.Instant;
+
+public class Trabajo implements Contratable{
 	
-	String nombre;
+	String descripcion;
+	Instant fechaInicio;
+	Instant fechaFinal;
+	boolean urgente;
+	Oficio oficio;
 	
-	public Trabajo(String n) {
-		this.nombre = n;
+	public Trabajo(String d, Instant fI, boolean u, Oficio o) {
+		this.descripcion = d;
+		this.fechaInicio = fI;
+		this.urgente = u;
+		this.oficio = o;
+	}
+	
+	public void setFechaFinal(Instant f) {
+		this.fechaFinal = f;
 	}
 
+	public boolean finalizado() {
+		
+		return (this.fechaFinal != null); 
+	}
+
+	@Override
+	public double costo() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void contratar() {
+		
+		
+		
+	}
 }

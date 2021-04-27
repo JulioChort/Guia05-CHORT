@@ -7,19 +7,29 @@ public class Usuario {
 	
 	String nombre;
 	String usuario;
-	List<Servicio> serviciosContratados;
-	List<Alquiler> alquileresContratados;
+	List<Contratable> trabajosYHerramientasContratadas;
 	
 	public Usuario(String n, String u) {
 		this.nombre = n;
 		this.usuario = u;
-		this.serviciosContratados = new ArrayList<Servicio>();
-		this.alquileresContratados = new ArrayList<Alquiler>();
+		this.trabajosYHerramientasContratadas = new ArrayList<Contratable>();
 	}
 	
 	public String toString() {
 		
 		return "Usuario: "+this.usuario+", se llama realmente "+this.nombre;
 	}
+
+	public void contratar(Contratable cont) {
+		
+		
+		cont.contratar();
+		
+		this.trabajosYHerramientasContratadas.add(cont);
+		
+		return;
+	}
+	
+	
 
 }

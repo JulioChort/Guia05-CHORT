@@ -8,7 +8,7 @@ public class Trabajador {
 	
 	 private String nombre;
 	 private String email;
-	 private String oficio;
+	 private Oficio oficio;
 	 private int costoPorHora;
 	 private double porcentajeComision;
 	 List<Trabajo> trabajosAsignados;
@@ -26,7 +26,7 @@ public class Trabajador {
 		return trabajosAsignados;
 	}
 
-	public Trabajador(String n, String e, String o, int c, double p) {
+	public Trabajador(String n, String e, Oficio o, int c, double p) {
 		super();
 		this.nombre = n;
 		this.email = e;
@@ -41,6 +41,24 @@ public class Trabajador {
 		return "Trabajador: "+this.nombre+", trabaja de "+this.oficio+", mail: "+this.email+" y cobra "+this.costoPorHora+" por hora de trabajo.";
 	}
 	 
+	public void asignarTrabajo(Trabajo tr1) throws AgendaOcupadaException, OficioNoCoincideException{
+		
+		try {
+			
+			if(this.oficio != tr1.oficio) {
+				throw OficioNoCoincideException;
+			}
+		
+		} catch(OficioNoCoincideException OfNoCoinc) {
+			
+			System.out.println(OfNoCoinc.getMessage());			
+		}
+		catch(AgendaOcupadaException AgendOcup) {
+			
+		}
+		
+	}
+	
 	 
 	 
 }
