@@ -15,6 +15,6 @@ public class ServicioPersonalizado extends Servicio{
 	}
 	@Override
 	public double calcularCosto() {
-		return this.valorPresupuestado+this.costoDeMateriales+this.costoDeTransporte + this.costoPorHoraTrabajador; //Supongo que el trabajo dura siempre dura 1 hora
+		return this.valorPresupuestado+this.costoDeMateriales+this.costoDeTransporte + this.costoPorHoraTrabajador; //Supongo que el trabajo dura siempre dura 1 hora y no se cobra porcentaje
 	}
 }

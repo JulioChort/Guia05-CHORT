@@ -39,6 +39,8 @@ public class Usuario {
 			throw new AlquilerNoEntregadoException();
 		}
 		
+		this.aniadirContratable(a1);
+		
 		return (Alquiler) a1;
 	}
 	
@@ -48,26 +50,35 @@ public class Usuario {
 	
 	public boolean contieneDosAlquileres() {
 		
-		boolean resultado = false;
-		
 		if(!this.misContratados.isEmpty()) {
 			
+			int apariciones = 0;
 			
-			//for(i)
+			for(Contratable c : this.misContratados) {
+				
+				if(c instanceof Alquiler) 
+					if(!c.finalizado())
+						apariciones++;
+				
+				if(apariciones > 1)
+					return true;
+			}
 		}
 		
-		return resultado;
+		return false;
 	}
 	
 	public void deudaAcumulada() {
 		
 		if(this.misContratados.isEmpty()) {
-			System.out.println("Usted no tiene ni trabajos ni alquileres contratados.");
+			System.out.println("El usuario no tiene ni trabajos ni alquileres contratados.");
 		}else {
+			
+			System.out.println("El usuario debe pagar los siguientes alquieres/trabajos: ");
 			
 			for(Contratable c : this.misContratados) {
 				
-				System.out.println("Debe "+c.costo()+" de "+c.toString());
+				System.out.println("	- Debe "+c.costo()+" de "+c.toString());
 			}
 		}
 	}

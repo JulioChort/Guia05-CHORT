@@ -14,19 +14,21 @@ public class App {
 		
 		Usuario u1 = new Usuario("Jose", "Jose1986");
 		
-		Servicio s1 = new ServicioEstandar("Arreglar ",200, 150, 0.05);
+		Servicio s1 = new ServicioEstandar("arreglar ",200, 150, 0.05);
 		 
 		//////// Algunos casos de prueba //////// Descomentar 1 por 1 para no perderse
 		
-		contratarUnTrabajo(u1, o1, t1, s1);		//El usuario contratata el trabajo y se le asigna a un trabajador sin problemas
+		//contratarUnTrabajo(u1, o1, t1, s1);		//El usuario contratata el trabajo y se le asigna a un trabajador sin problemas
 		
-		noCoincideOficio(u1, o1, t1, s1);		//Tira la excepcion "OficioNoCoincideException"
+		//noCoincideOficio(u1, o1, t1, s1);		//Tira la excepcion "OficioNoCoincideException"
 		
-		agendaOcupada(u1, o1, t1, s1);			//Tira la excepcion "AgendaOcupadaException"
+		//agendaOcupada(u1, o1, t1, s1);		//Tira la excepcion "AgendaOcupadaException"
 		
-		alquilarHerramienta(u1, h1);			//El usuario alquila una herramienta sin problemas
+		//alquilarHerramienta(u1, h1);			//El usuario alquila una herramienta sin problemas
 		
 		//alquilarMasDe2Herramientas(u1, h1);	//Tira la excepcion "AlquilerNoEntregadoException"
+		
+		todosJuntos(u1, o1, t1, s1, h1);		//Todas las pruebas anteriores en una sola
 		
 
 	}
@@ -39,10 +41,9 @@ public class App {
 		try {
 			
 				t1.asignarTrabajo((Trabajo)tr1);
-				
-				u1.deudaAcumulada();
 
-		} catch(OficioNoCoincideException OfNoCoinc) {
+		} 
+		catch(OficioNoCoincideException OfNoCoinc) {
 			
 			OfNoCoinc.printStackTrace();
 		}
@@ -50,28 +51,35 @@ public class App {
 				
 			AgendOcup.printStackTrace();
 		}
+		finally {
+			u1.deudaAcumulada();
+		}
 		
 	}
 	
 
 	public static void noCoincideOficio(Usuario u1, Oficio o1, Trabajador t1, Servicio s1) {
 	
-	Oficio o2 = new Oficio("Electricista");
-	
-	Contratable tr1 = u1.contratarServicio(s1, "una puerta", LocalDate.of(2021,4,27),o2, true);
-	
-	try {
+		Oficio o2 = new Oficio("Electricista");
 		
-			t1.asignarTrabajo((Trabajo)tr1);	
+		Contratable tr1 = u1.contratarServicio(s1, "una puerta", LocalDate.of(2021,4,27),o2, true);
+		
+		try {
 			
-	} catch(OficioNoCoincideException OfNoCoinc) {
-		
-		OfNoCoinc.printStackTrace();
-	}
-	catch(AgendaOcupadaException AgendOcup) {
-		
-		AgendOcup.printStackTrace();
-	}
+				t1.asignarTrabajo((Trabajo)tr1);	
+				
+		} 
+		catch(OficioNoCoincideException OfNoCoinc) {
+			
+			OfNoCoinc.printStackTrace();
+		}
+		catch(AgendaOcupadaException AgendOcup) {
+			
+			AgendOcup.printStackTrace();
+		}
+		finally {
+			u1.deudaAcumulada();
+		}
 	
 }
 	
@@ -87,13 +95,17 @@ public class App {
 			
 				t1.asignarTrabajo((Trabajo) tr1);
 				
-		} catch(OficioNoCoincideException OfNoCoinc) {
+		} 
+		catch(OficioNoCoincideException OfNoCoinc) {
 			
 			OfNoCoinc.printStackTrace();
 		}
 		catch(AgendaOcupadaException AgendOcup) {
 			
 			AgendOcup.printStackTrace();
+		}
+		finally {
+			u1.deudaAcumulada();
 		}
 		
 	}
@@ -102,23 +114,141 @@ public class App {
 		
 		try {
 			
-			Contratable a1 = u1.contratarAlquiler(h1, LocalDate.of(2021,4,27), LocalDate.of(2021,4,28)); 
+			Contratable a1 = u1.contratarAlquiler(h1, LocalDate.of(2021,4,27), LocalDate.of(2021,4,29)); 
+			
+			//((Alquiler) a1).setFechaRealDevolucion(LocalDate.of(2021,4,30));		//Por si se desea colocar una fecha de devolucion
 				
 			System.out.println(a1.toString());
 			
-		} catch(AlquilerNoEntregadoException AlqNoEntregado) {
+		} 
+		catch(AlquilerNoEntregadoException AlqNoEntregado) {
 			
 			AlqNoEntregado.printStackTrace();
+		}
+		finally {
+			u1.deudaAcumulada();
 		}
 		
 	}
 	
-	public static void alquilarMasDe2HerramientasSinDevolver() {
+	public static void alquilarMasDe2Herramientas(Usuario u1, Herramienta h1) {
 		
+		Herramienta h2 = new Herramienta("Destornillador", 85);
 		
+		Herramienta h3 = new Herramienta("Llave inglesa", 120);
 		
-		System.out.println("Salio todo bien.");
+		try {
+			
+			Contratable a1 = u1.contratarAlquiler(h1, LocalDate.of(2021,4,27), LocalDate.of(2021,4,29)); 
+			System.out.println(a1.toString());
+			
+			Contratable a2 = u1.contratarAlquiler(h2, LocalDate.of(2021,4,27), LocalDate.of(2021,4,29));
+			System.out.println(a2.toString());
+			
+			Contratable a3 = u1.contratarAlquiler(h3, LocalDate.of(2021,4,27), LocalDate.of(2021,4,29)); 
+			System.out.println(a3.toString());
+			
+		} 
+		catch(AlquilerNoEntregadoException AlqNoEntregado) {
+			
+			AlqNoEntregado.printStackTrace();
+		}
+		finally {
+			u1.deudaAcumulada();
+		}
 		
 	}
 	
+	public static void todosJuntos(Usuario u1, Oficio o1, Trabajador t1, Servicio s1, Herramienta h1) { //todosJuntos(u1, o1, t1, s1, h1)
+		
+		u1.deudaAcumulada();	//No tiene nada contratado
+		
+		Oficio o2 = new Oficio("Electricista");
+		
+		Herramienta h2 = new Herramienta("Destornillador", 85);
+		
+		Herramienta h3 = new Herramienta("Llave inglesa", 120);
+		
+		Servicio s2 = new ServicioPersonalizado("instalar ", 50, 200, 30, 500);
+		
+		Servicio s3 = new ServicioEstandar("arreglar ", 300, 50, 0.08);
+		
+		Contratable tr1 = u1.contratarServicio(s1, "una puerta", LocalDate.of(2021,4,27),o1, false);
+		
+		Contratable tr2 = u1.contratarServicio(s2, "una hamaca", LocalDate.of(2021,4,25),o2, true);
+		
+		Contratable tr3 = u1.contratarServicio(s3, "una silla", LocalDate.of(2021,4,27), o1, true);	
+		
+		try {
+			
+			t1.asignarTrabajo((Trabajo)tr1);
+
+		} 
+		catch(OficioNoCoincideException OfNoCoinc) {
+			
+			OfNoCoinc.printStackTrace();
+		}
+		catch(AgendaOcupadaException AgendOcup) {
+				
+			AgendOcup.printStackTrace();
+		}
+		
+		try {
+			
+			t1.asignarTrabajo((Trabajo)tr2);	
+			
+		} 
+		catch(OficioNoCoincideException OfNoCoinc) {
+		
+		OfNoCoinc.printStackTrace();
+		}
+		catch(AgendaOcupadaException AgendOcup) {
+		
+		AgendOcup.printStackTrace();
+		}
+		
+		try {
+		
+			t1.asignarTrabajo((Trabajo) tr3);
+			
+		} 
+		catch(OficioNoCoincideException OfNoCoinc) {
+			
+			OfNoCoinc.printStackTrace();
+		}
+		catch(AgendaOcupadaException AgendOcup) {
+			
+			AgendOcup.printStackTrace();
+		}
+		
+		try {
+			
+			Contratable a1 = u1.contratarAlquiler(h1, LocalDate.of(2021,4,27), LocalDate.of(2021,4,28)); 
+			
+		} 
+		catch(AlquilerNoEntregadoException AlqNoEntregado) {
+			
+			AlqNoEntregado.printStackTrace();
+		}
+		try {
+			Contratable a2 = u1.contratarAlquiler(h2, LocalDate.of(2021,4,27), LocalDate.of(2021,4,29));
+			
+			Contratable a3 = u1.contratarAlquiler(h3, LocalDate.of(2021,4,27), LocalDate.of(2021,4,29)); 
+			
+		} 
+		catch(AlquilerNoEntregadoException AlqNoEntregado) {
+			
+			AlqNoEntregado.printStackTrace();
+		}
+		finally {
+			
+			u1.deudaAcumulada();
+		}
+		
+		
+		
+		
+	}
 }
+	
+
