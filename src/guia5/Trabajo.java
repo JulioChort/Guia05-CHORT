@@ -1,24 +1,25 @@
 package guia5;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public class Trabajo implements Contratable{
 	
 	String descripcion;
-	Instant fechaInicio;
-	Instant fechaFinal;
+	LocalDate fechaInicio;
+	LocalDate fechaFinal;
 	boolean urgente;
 	Oficio oficioAsociado;
 	Servicio servicioAsociado;
 	
-	public Trabajo(String d, Instant fI, boolean u, Oficio o) {
+	public Trabajo(String d, LocalDate fI, boolean u, Oficio o, Servicio s) {
 		this.descripcion = d;
 		this.fechaInicio = fI;
 		this.urgente = u;
 		this.oficioAsociado = o;
+		this.servicioAsociado = s;
 	}
 	
-	public void setFechaFinal(Instant f) {
+	public void setFechaFinal(LocalDate f) {
 		this.fechaFinal = f;
 	}
 
@@ -29,14 +30,13 @@ public class Trabajo implements Contratable{
 
 	@Override
 	public double costo() {
-		// TODO Auto-generated method stub
-		return 0;
+		return urgente? this.servicioAsociado.calcularCosto()*1.5 : this.servicioAsociado.calcularCosto();
+	}
+	
+	@Override
+	public String toString() {
+		
+		return  servicioAsociado.toString()+this.descripcion;
 	}
 
-	@Override
-	public void contratar() {
-		
-		
-		
-	}
 }

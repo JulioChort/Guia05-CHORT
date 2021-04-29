@@ -1,19 +1,19 @@
 package guia5;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
 	
-	String nombre;
-	String usuario;
-	List<Contratable> trabajosYHerramientasContratadas;
+	private String nombre;
+	private String usuario;
+	private List<Contratable> misContratados;
 	
 	public Usuario(String n, String u) {
 		this.nombre = n;
 		this.usuario = u;
-		this.trabajosYHerramientasContratadas = new ArrayList<Contratable>();
+		this.misContratados = new ArrayList<Contratable>();
 	}
 	
 	public String toString() {
@@ -21,15 +21,55 @@ public class Usuario {
 		return "Usuario: "+this.usuario+", se llama realmente "+this.nombre;
 	}
 
-	public Trabajo contratar(Servicio serv, String desc, Instant fechaInic, Oficio of) { //String d, Instant fI, boolean u, Oficio o
+	public Trabajo contratarServicio(Servicio serv, String desc, LocalDate fechaInic, Oficio of, Boolean urgencia) { 
 		
-		String descTrabajo = serv.getDescripcion()+" "+desc;
+		Contratable tr1 = new Trabajo(desc, fechaInic, urgencia, of, serv);
 		
-		Contratable tr1 = new Trabajo(descTrabajo, fechaInic, serv.getUrgencia(), of);
+		this.aniadirContratable(tr1);
+		 
+		return (Trabajo) tr1;	
+	}
+
+	public Alquiler contratarAlquiler (Herramienta h1, LocalDate fecInic, LocalDate fecFinal) throws AlquilerNoEntregadoException {
 		
-		this.trabajosYHerramientasContratadas.add(tr1);
+		Contratable a1 = new Alquiler(h1, fecInic, fecFinal);
 		
-		return (Trabajo) tr1;	//TODO: Probablemente cambiar/sacar el cast
+		if(this.contieneDosAlquileres()) {
+			
+			throw new AlquilerNoEntregadoException();
+		}
+		
+		return (Alquiler) a1;
+	}
+	
+	public void aniadirContratable(Contratable c1) {
+		this.misContratados.add(c1);
+	}
+	
+	public boolean contieneDosAlquileres() {
+		
+		boolean resultado = false;
+		
+		if(!this.misContratados.isEmpty()) {
+			
+			
+			//for(i)
+		}
+		
+		return resultado;
+	}
+	
+	public void deudaAcumulada() {
+		
+		if(this.misContratados.isEmpty()) {
+			System.out.println("Usted no tiene ni trabajos ni alquileres contratados.");
+		}else {
+			
+			for(Contratable c : this.misContratados) {
+				
+				System.out.println("Debe "+c.costo()+" de "+c.toString());
+			}
+		}
 	}
 	
 	

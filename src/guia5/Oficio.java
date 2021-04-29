@@ -21,5 +21,9 @@ public class Oficio {
 		
 		return resultado;
 	}
+	
+	public String toString() {
+		return this.nombre;
+	}
 
 }

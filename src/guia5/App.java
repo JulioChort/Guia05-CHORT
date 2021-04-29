@@ -1,6 +1,6 @@
 package guia5;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public class App {
 
@@ -8,105 +8,117 @@ public class App {
 		
 		Oficio o1 = new Oficio("Carpintero");
 		
-		Trabajador t1 = new Trabajador("Juan","juan@gmail.com",o1,150,5.0);
+		Trabajador t1 = new Trabajador("Juan","juan@gmail.com",o1);
 		
-		Herramienta h1 = new Herramienta("Martillo", 200);
+		Herramienta h1 = new Herramienta("Martillo", 60);
 		
 		Usuario u1 = new Usuario("Jose", "Jose1986");
 		
-		//Contratable panchito = new Trabajo("juan",);
-		
-		System.out.println(t1.toString());
-		System.out.println(h1.toString());
-		System.out.println(u1.toString());
-		
+		Servicio s1 = new ServicioEstandar("Arreglar ",200, 150, 0.05);
 		 
+		//////// Algunos casos de prueba //////// Descomentar 1 por 1 para no perderse
 		
-		//usuarioContrataUnTrabajo();
+		contratarUnTrabajo(u1, o1, t1, s1);		//El usuario contratata el trabajo y se le asigna a un trabajador sin problemas
 		
-		usuarioNoPuedeContratarUnTrabajo();
+		noCoincideOficio(u1, o1, t1, s1);		//Tira la excepcion "OficioNoCoincideException"
 		
+		agendaOcupada(u1, o1, t1, s1);			//Tira la excepcion "AgendaOcupadaException"
 		
-		// TODO: Implementar interfaz Contratable
+		alquilarHerramienta(u1, h1);			//El usuario alquila una herramienta sin problemas
+		
+		//alquilarMasDe2Herramientas(u1, h1);	//Tira la excepcion "AlquilerNoEntregadoException"
+		
 
 	}
 	
-	public static void usuarioContrataUnTrabajo() {
+	public static void contratarUnTrabajo(Usuario u1, Oficio o1, Trabajador t1, Servicio s1) {
 		
-		Usuario u1 = new Usuario("Jose", "Jose1986");
+		Contratable tr1 = u1.contratarServicio(s1, "una puerta", LocalDate.of(2021,4,27),o1, false);
 		
-		Oficio o1 = new Oficio("Carpintero");
-		
-		Trabajador t1 = new Trabajador("Juan","juan@gmail.com",o1,150,5.0);
-		
-		Servicio s1 = new ServicioEstandar("Arreglar",200, false);
-		
-		Contratable tr1 = u1.contratar(s1, "una puerta", Instant.now(),o1);
 		
 		try {
 			
-				t1.asignarTrabajo((Trabajo)tr1);	// TODO: Probablemente remover el cast
+				t1.asignarTrabajo((Trabajo)tr1);
+				
+				u1.deudaAcumulada();
 
 		} catch(OficioNoCoincideException OfNoCoinc) {
 			
 			OfNoCoinc.printStackTrace();
 		}
-		/*catch(AgendaOcupadaException AgendOcup) {
-			
-			System.out.println(AgendOcup.getMessage());		
+		catch(AgendaOcupadaException AgendOcup) {
+				
 			AgendOcup.printStackTrace();
-		}*/
+		}
+		
+	}
+	
+
+	public static void noCoincideOficio(Usuario u1, Oficio o1, Trabajador t1, Servicio s1) {
+	
+	Oficio o2 = new Oficio("Electricista");
+	
+	Contratable tr1 = u1.contratarServicio(s1, "una puerta", LocalDate.of(2021,4,27),o2, true);
+	
+	try {
+		
+			t1.asignarTrabajo((Trabajo)tr1);	
+			
+	} catch(OficioNoCoincideException OfNoCoinc) {
+		
+		OfNoCoinc.printStackTrace();
+	}
+	catch(AgendaOcupadaException AgendOcup) {
+		
+		AgendOcup.printStackTrace();
+	}
+	
+}
+	
+	public static void agendaOcupada(Usuario u1, Oficio o1, Trabajador t1, Servicio s1) {
+		
+		Contratable tr2 = new Trabajo("una silla", LocalDate.of(2021,4,27), false, o1, new ServicioEstandar("reparar ", 120, 100, 0.03));
+		
+		Contratable tr1 = u1.contratarServicio(s1, "una puerta", LocalDate.of(2021,4,27),o1, true);
+		
+		try {
+			
+				t1.asignarTrabajo((Trabajo) tr2);
+			
+				t1.asignarTrabajo((Trabajo) tr1);
+				
+		} catch(OficioNoCoincideException OfNoCoinc) {
+			
+			OfNoCoinc.printStackTrace();
+		}
+		catch(AgendaOcupadaException AgendOcup) {
+			
+			AgendOcup.printStackTrace();
+		}
+		
+	}
+
+	public static void alquilarHerramienta(Usuario u1, Herramienta h1) {
+		
+		try {
+			
+			Contratable a1 = u1.contratarAlquiler(h1, LocalDate.of(2021,4,27), LocalDate.of(2021,4,28)); 
+				
+			System.out.println(a1.toString());
+			
+		} catch(AlquilerNoEntregadoException AlqNoEntregado) {
+			
+			AlqNoEntregado.printStackTrace();
+		}
+		
+	}
+	
+	public static void alquilarMasDe2HerramientasSinDevolver() {
+		
 		
 		
 		System.out.println("Salio todo bien.");
 		
 	}
-	
-public static void usuarioContrataUnaHerramienta() {
-		
-		Usuario u1 = new Usuario("Jose", "Jose1986");
-		
-		Herramienta h1 = new Herramienta("Martillo", 200);
-		
-		Contratable a1 = new Alquiler(h1,Instant.now(), Instant.now());
-		
-		//u1.contratar(a1);
-		
-	}
-
-public static void usuarioNoPuedeContratarUnTrabajo() {
-	
-	Usuario u1 = new Usuario("Jose", "Jose1986");
-	
-	Oficio o1 = new Oficio("Carpintero");
-	
-	Oficio o2 = new Oficio("Electricista");
-	
-	Trabajador t1 = new Trabajador("Juan","juan@gmail.com",o1,150,5.0);
-	
-	Servicio s1 = new ServicioEstandar("Arreglar",200, false);
-	
-	Contratable tr1 = u1.contratar(s1, "una puerta", Instant.now(),o2);
-	
-	try {
-		
-			t1.asignarTrabajo((Trabajo)tr1);	// TODO: Probablemente remover el cast
-
-	} catch(OficioNoCoincideException OfNoCoinc) {
-		
-		OfNoCoinc.printStackTrace();
-	}
-	/*catch(AgendaOcupadaException AgendOcup) {
-		
-		System.out.println(AgendOcup.getMessage());		
-		AgendOcup.printStackTrace();
-	}*/
-	
-	
-	System.out.println("Salio todo bien.");
-	
-}
-	
-	
 	
 }

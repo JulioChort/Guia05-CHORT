@@ -16,7 +16,7 @@ public class Herramienta {
     
 	public String toString() {
 		
-		return "Herramienta: "+this.nombre+" que cuesta "+this.costoPorDia+" por dia.";
+		return this.nombre+" que cuesta "+this.costoPorDia+" por dia";
 	}
 	
 }

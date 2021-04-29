@@ -1,18 +1,17 @@
 package guia5;
 
-import java.time.Instant;
+import java.time.Duration;
+import java.time.LocalDate;
 
 public class Alquiler implements Contratable{
 	
-	Herramienta herramientaAlquilada;
-	public Instant fechaInicio;
-	public Instant fechaFinal;
-	public Instant diaRealDevolucion; //Si es null, tomar como que no se devolvio. Se toma la fecha de hoy
-    
-	
+	private Herramienta herramientaAlquilada;
+	public LocalDate fechaInicio;
+	public LocalDate fechaFinal;
+	public LocalDate fechaRealDevolucion; //Si es null, tomar como que no se devolvio. Se toma la fecha de hoy
     
     
-    public Alquiler(Herramienta h, Instant fI, Instant fF) {
+    public Alquiler(Herramienta h, LocalDate fI, LocalDate fF) { //Estaria bien pasarle el usuario? Para tener un registro de los usuarios en la lista de alquileres
 		this.herramientaAlquilada = h;
 		this.fechaInicio = fI;
 		this.fechaFinal = fF;
@@ -20,35 +19,38 @@ public class Alquiler implements Contratable{
 
 	public boolean enMora() {
     	
-    	return ((this.diaRealDevolucion == null) || (this.fechaFinal.isBefore(this.diaRealDevolucion)));		
+    	return ((this.fechaRealDevolucion == null && this.fechaFinal.isBefore(LocalDate.now())) || (this.fechaFinal.isBefore(this.fechaRealDevolucion)));		
     }
     
     public boolean finalizado() {
     	
-    	return (this.diaRealDevolucion != null);	
+    	return (this.fechaRealDevolucion != null);	
     }
 
 	@Override
 	public double costo() {
     	double resultado = herramientaAlquilada.getCostoPorDia()*this.cantidadDeDias(); 
     	
-    	//TODO: Hacer algo si la herramienta no se devolvio en el dia pactado? Quizas cobrar un 50% mas
+    	if(this.enMora()) 
+    		resultado *= 1.5;	//Le sumo un 50% porque está atrasado (de onda)
     	
     	return resultado;
 	}
 
-	@Override
-	public void contratar() {
-		
-		
-	}
 	
 	public int cantidadDeDias() {
-		if(this.diaRealDevolucion == null) {
-			return 0; //Hoy - fechaInicio
-		}
 		
-		return 2; //fechaFinal - fechaInicio
+		if(this.fechaRealDevolucion == null) {
+			return (int) Duration.between(this.fechaInicio, LocalDate.now()).toDaysPart(); //Casteado a int porque devuelve en long
+		}
+
+		return (int) Duration.between(this.fechaInicio, this.fechaFinal).toDaysPart();
+	}
+	
+	@Override
+	public String toString() {
+		
+		return "Herramienta alquilada: "+this.herramientaAlquilada+", desde: "+this.fechaInicio+" hasta: "+this.fechaFinal+", fecha real de devolución "+this.fechaRealDevolucion;
 	}
 
 }

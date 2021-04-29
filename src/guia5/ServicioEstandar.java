@@ -2,29 +2,19 @@ package guia5;
 
 public class ServicioEstandar extends Servicio{
 
-	 public int costo;
+	 public int costoServicio;
 	 
-	 public ServicioEstandar(String d, int c, boolean u) {
+	 public ServicioEstandar(String d, int cS, int cH, double cT) {
 		 this.descripcion = d;
-		 this.costo = c;
-		 this.urgente = u;
+		 this.costoServicio = cS;
+		 this.costoPorHoraTrabajador = cH;
+		 this.comisionTrabajador = cT;
 	 }
 
-	  public double calcularCosto(Trabajador t){
-		  
-		  	double resultado = costo+t.getCostoPorHora()+(costo+t.getCostoPorHora())*t.getPorcentajeComision(); //Supongo que siempre dura 1 hora
-		  	
-		  	//resultado += resultado*t.getPorcentajeComision();
-
-		  	if(this.urgente)
-		  		resultado *= 1.5;
-		  			
-	        return resultado;
+	 @Override
+	  public double calcularCosto(){		  
+		  	return(this.costoServicio + this.costoPorHoraTrabajador)*(1 + this.comisionTrabajador); 	//Supongo que el trabajo dura siempre dura 1 hora
 	 }
-	  
-	/* public String getDescripcion() {
-		 super();
-	 }*/
-	
+
 	
 }
